@@ -105,6 +105,8 @@
     expectEMailAddress('VoltCloud customer email address',EMailAddress)
     expectPassword         ('VoltCloud customer password',Password)
 
+    assertApplicationFocus()
+
     await loginCustomer(EMailAddress,Password)
   }
 
@@ -124,10 +126,8 @@
   export async function focusOnApplication (
     ApplicationIdOrURL:string
   ):Promise<void> {
-    if (activeCustomerId == null) {
+    if (activeDeveloperId != null) {
       expectNonEmptyString('VoltCloud application id',ApplicationIdOrURL)
-
-      assertDeveloperMandate()
 
       currentApplicationId  = undefined
       currentApplicationURL = undefined
@@ -381,8 +381,9 @@
 
     let Response
     try {
+      let URL = (activeCustomerId == null ? '{{dashboard_url}}' : '{{application_url}}')
       Response = await ResponseOf(
-        'private', 'GET', '{{dashboard_url}}/api/storage/{{application_id}}'
+        'private', 'GET', URL + '/api/storage/{{application_id}}'
       )
     } catch (Signal) {
       switch (Signal.HTTPStatus) {
@@ -415,8 +416,9 @@
 
     let Response
     try {
+      let URL = (activeCustomerId == null ? '{{dashboard_url}}' : '{{application_url}}')
       Response = await ResponseOf(
-        'private', 'GET', '{{dashboard_url}}/api/storage/{{application_id}}/key/{{application_storage_key}}', {
+        'private', 'GET', URL + '/api/storage/{{application_id}}/key/{{application_storage_key}}', {
           application_storage_key: StorageKey
         }
       )
@@ -989,8 +991,9 @@
     assertCustomerFocus()
 
     try {
+      let URL = (activeCustomerId == null ? '{{dashboard_url}}' : '{{application_url}}')
       await ResponseOf(
-        'private', 'DELETE', '{{dashboard_url}}/api/user/{{customer_id}}'
+        'private', 'DELETE', URL + '/api/user/{{customer_id}}'
       )
     } catch (Signal) {
       switch (Signal.HTTPStatus) {
@@ -1016,8 +1019,9 @@
 
     let Response
     try {
+      let URL = (activeCustomerId == null ? '{{dashboard_url}}' : '{{application_url}}')
       Response = await ResponseOf(
-        'private', 'GET', '{{dashboard_url}}/api/storage/{{customer_id}}'
+        'private', 'GET', URL + '/api/storage/{{customer_id}}'
       )
     } catch (Signal) {
       switch (Signal.HTTPStatus) {
@@ -1051,8 +1055,9 @@
 
     let Response
     try {
+      let URL = (activeCustomerId == null ? '{{dashboard_url}}' : '{{application_url}}')
       Response = await ResponseOf(
-        'private', 'GET', '{{dashboard_url}}/api/storage/{{customer_id}}/key/{{customer_storage_key}}', {
+        'private', 'GET', URL + '/api/storage/{{customer_id}}/key/{{customer_storage_key}}', {
           customer_storage_key: StorageKey
         }
       )
@@ -1093,8 +1098,9 @@
     assertCustomerFocus()
 
     try {
+      let URL = (activeCustomerId == null ? '{{dashboard_url}}' : '{{application_url}}')
       await ResponseOf(
-        'private', 'PUT', '{{dashboard_url}}/api/storage/{{customer_id}}/key/{{customer_storage_key}}', {
+        'private', 'PUT', URL + '/api/storage/{{customer_id}}/key/{{customer_storage_key}}', {
           customer_storage_key: StorageKey
         }, StorageValue
       )
@@ -1130,8 +1136,9 @@
     assertCustomerFocus()
 
     try {
+      let URL = (activeCustomerId == null ? '{{dashboard_url}}' : '{{application_url}}')
       await ResponseOf(
-        'private', 'DELETE', '{{dashboard_url}}/api/storage/{{customer_id}}/key/{{customer_storage_key}}', {
+        'private', 'DELETE', URL + '/api/storage/{{customer_id}}/key/{{customer_storage_key}}', {
           customer_storage_key: StorageKey
         }
       )
@@ -1162,8 +1169,9 @@
     assertCustomerFocus()
 
     try {
+      let URL = (activeCustomerId == null ? '{{dashboard_url}}' : '{{application_url}}')
       await ResponseOf(
-        'private', 'DELETE', '{{dashboard_url}}/api/storage/{{customer_id}}'
+        'private', 'DELETE', URL + '/api/storage/{{customer_id}}'
       )
     } catch (Signal) {
       switch (Signal.HTTPStatus) {
@@ -1389,8 +1397,8 @@
 
       activeAccessToken = Response.access_token
 
-      currentCustomerId      = undefined     // auto-focus the logged-incustomer
-      currentCustomerAddress = undefined                                 // dto.
+      currentCustomerId      = Response.user_id // auto-focus logged-in customer
+      currentCustomerAddress = EMailAddress                              // dto.
     } else {
       throwError('InternalError: could not analyze response for login request')
     }
