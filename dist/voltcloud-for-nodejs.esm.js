@@ -1647,7 +1647,8 @@ function assertCustomerFocus() {
         throwError('InvalidState: please focus on a specific VoltCloud application customer first');
 }
 /**** loginDeveloper ****/
-function loginDeveloper(EMailAddress, Password) {
+function loginDeveloper(EMailAddress, Password, firstAttempt) {
+    if (firstAttempt === void 0) { firstAttempt = true; }
     return __awaiter(this, void 0, void 0, function () {
         var Response, Signal_27;
         return __generator(this, function (_a) {
@@ -1665,12 +1666,14 @@ function loginDeveloper(EMailAddress, Password) {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
+                    activeDeveloperAddress = EMailAddress; // needed in case of login failure
+                    activeDeveloperPassword = Password;
                     return [4 /*yield*/, ResponseOf('public', 'POST', '{{dashboard_url}}/api/auth/login', null, {
                             grant_type: 'password',
                             username: EMailAddress,
                             password: Password,
                             scope: DashboardId
-                        })];
+                        }, firstAttempt)];
                 case 2:
                     Response = _a.sent();
                     return [3 /*break*/, 4];
@@ -1686,11 +1689,11 @@ function loginDeveloper(EMailAddress, Password) {
                         (Response.token_type === 'bearer') && ValueIsString(Response.access_token) &&
                         ValueIsString(Response.user_id)) {
                         activeDeveloperId = Response.user_id;
-                        activeDeveloperAddress = EMailAddress;
-                        activeDeveloperPassword = Password;
                         activeAccessToken = Response.access_token;
                     }
                     else {
+                        activeDeveloperAddress = undefined;
+                        activeDeveloperPassword = undefined;
                         throwError('InternalError: could not analyze response for login request');
                     }
                     return [2 /*return*/];
@@ -1699,7 +1702,8 @@ function loginDeveloper(EMailAddress, Password) {
     });
 }
 /**** loginCustomer ****/
-function loginCustomer(EMailAddress, Password) {
+function loginCustomer(EMailAddress, Password, firstAttempt) {
+    if (firstAttempt === void 0) { firstAttempt = true; }
     return __awaiter(this, void 0, void 0, function () {
         var Response, Signal_28;
         return __generator(this, function (_a) {
@@ -1717,12 +1721,14 @@ function loginCustomer(EMailAddress, Password) {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
+                    activeCustomerAddress = EMailAddress; // needed in case of login failure
+                    activeCustomerPassword = Password;
                     return [4 /*yield*/, ResponseOf('public', 'POST', '{{application_url}}/api/auth/login', null, {
                             grant_type: 'password',
                             username: EMailAddress,
                             password: Password,
                             scope: currentApplicationId
-                        })];
+                        }, firstAttempt)];
                 case 2:
                     Response = _a.sent();
                     return [3 /*break*/, 4];
@@ -1738,13 +1744,13 @@ function loginCustomer(EMailAddress, Password) {
                         (Response.token_type === 'bearer') && ValueIsString(Response.access_token) &&
                         ValueIsString(Response.user_id)) {
                         activeCustomerId = Response.user_id;
-                        activeCustomerAddress = EMailAddress;
-                        activeCustomerPassword = Password;
                         activeAccessToken = Response.access_token;
                         currentCustomerId = Response.user_id; // auto-focus logged-in customer
                         currentCustomerAddress = EMailAddress; // dto.
                     }
                     else {
+                        activeCustomerAddress = undefined;
+                        activeCustomerPassword = undefined;
                         throwError('InternalError: could not analyze response for login request');
                     }
                     return [2 /*return*/];
@@ -1831,9 +1837,9 @@ function ResponseOf(Mode, Method, URL, Parameters, Data, firstAttempt) {
                                     }
                                 case (StatusCode === 401):
                                     if (firstAttempt) { // try to "refresh" the access token
-                                        return (activeCustomerId == null
-                                            ? loginDeveloper(activeDeveloperAddress, activeDeveloperPassword)
-                                            : loginCustomer(activeCustomerAddress, activeCustomerPassword))
+                                        return (activeDeveloperAddress != null // also catches login failures
+                                            ? loginDeveloper(activeDeveloperAddress, activeDeveloperPassword, false)
+                                            : loginCustomer(activeCustomerAddress, activeCustomerPassword, false))
                                             .then(function () {
                                             ResponseOf(Mode, Method, URL, Parameters, Data, false)
                                                 .then(function (Result) { return resolve(Result); })
