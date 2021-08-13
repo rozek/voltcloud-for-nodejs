@@ -184,10 +184,40 @@ import {
 
 Just copy that statement into your source code and remove all unwanted functions.
 
+## Smoke Test ##
 
+This repository contains a small "smoke test" (in a file called "smoke-test.js") which may also serve as an example for how to use `voltcloud-for-nodejs`. It illustrates the "good cases" of all functions offered by this library.
 
+### Preparation ###
 
+The test becomes available if you download this repository (either using [git](https://git-scm.com/) in any of its variants or by unpacking a downloaded a [ZIP archive containing this repo](https://github.com/rozek/voltcloud-for-nodejs/archive/refs/heads/main.zip))
 
+Now navigate to the folder containg the files of this repository and run
+
+```
+npm install
+```
+
+once in order to install any dependencies for the test.
+
+The smoke test itself may be configured using the following set of environment variables:
+
+* **`developer_email_address`** - set this to the email address of the developer for whom the test should run
+* **`developer_password`** - set this to the developer's password
+* **`customer_email_address`** - set this to an email address (different from that for the developer!) you have access to. It will become the address of a "customer"
+* **`customer_password`** - set this to the "customer"s password (which must meet the VoltCLoud password requirements)
+* **`customer_confirmation_token`** - initially, this variable should remain blank. Follow the instructions given by "smoke-test.js" to set it to a customer confirmation token when needed
+* **`customer_password_reset_token`** - initially, this variable should remain blank. Follow the instructions given by "smoke-test.js" to set it to a password reset token when needed
+
+### Execution ###
+
+The test may be started from within a shell using
+
+```
+node smoke-test.js
+```
+
+Important: for all procedures to get tested, you will have to start the script four times - in between, you may have to set the environment variables `customer_confirmation_token` or `customer_password_reset_token` following the instructions printed on the console
 
 ## Build Instructions ##
 
