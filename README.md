@@ -16,10 +16,10 @@ See below for a "smoke test" which may also serve as an example for how to use t
 
 ## Overview ##
 
-As a developer, one may sign-up for VoltCloud to create (web-based) applications and give them a name. Then, the actual application may be uploaded to VoltCloud and will from now on be served at a VoltCloud URL which includes the given name.
+As a developer, one may sign-up for VoltCloud to create (web-based) applications and give them a name. Then, the actual application may be uploaded to VoltCloud and will from now on be served from a VoltCloud URL which includes the given name.
 
-If desired, VoltCloud applications may support "users" (in this document, these users are called "customers" in order to explicitly distinguish them from application "developers").
+If desired, VoltCloud applications may support their own "users" (in this document, these users are called "customers" in order to explicitly distinguish them from application "developers").
 
-Users may register for a VoltCloud application by providing their EMail address and a password (to be able to log in later). They will then receive a "confirmation mail" with a special link to the application they signed-up for which, when clicked, will allow the application to confirm the given user. Should the confirmation message get lost, it may be resent upon request.
+Users may register themselves for a VoltCloud application by providing their EMail address and a password (which will be required to log into the application later). They will then receive a "confirmation mail" with a special link to the application they signed-up for which, when clicked, will allow the application to confirm the given user. Should the confirmation message get lost, it may be resent upon request.
 
 Should a customer forget his/ger password, there is also the possibility to initiate a "password reset" process. If triggered, a "password reset email" with a special link to the application will be sent to the customer which, when clicked, should allow the customer to change his/her password. A password reset may be triggered as often as needed.
