@@ -141,9 +141,9 @@ Note: additionally, developers may also call any functions mentioned in the prev
 
 ### exported Functions for Customer Mandates ###
 
-* **`async function changeCustomerEMailAddressTo (EMailAddress:string):Promise<void>`**<br>
-* **`async function changeCustomerPasswordTo (Password:string):Promise<void>`**<br>
-* **`async function updateCustomerRecordBy (Settings:VC_CustomerUpdate):Promise<void>`**<br>
+* **`async function changeCustomerEMailAddressTo (EMailAddress:string):Promise<void>`**<br>changes the EMail address of the currently configured customer to `EMailAddress`. No customer with that address must currently be registered for the current target application or the function will fail
+* **`async function changeCustomerPasswordTo (Password:string):Promise<void>`**<br>changes the password of the currently configured customer to `Password`
+* **`async function updateCustomerRecordBy (Settings:VC_CustomerUpdate):Promise<void>`**<br>updates the settings for the current target customer given by `Settings`. See above for the internals of the Settings object
 
 Note: additionally, developers may also call any functions mentioned in the previous sections, which do either not require any mandate or may be used with developer or customer mandates
 
