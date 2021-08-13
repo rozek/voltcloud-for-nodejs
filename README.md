@@ -74,16 +74,16 @@ In contrast to Java, it's not very common in JavaScript to throw specific subcla
 
 TypeScript programmers may import the following types in order to benefit from static type checking (JavaScript programmers may simply skip this section):
 
-* **`type VC_ApplicationName = string`**<br>application names must be strings with 1...`maxApplicationNameLength` characters matching the regular expression `ApplicationNamePattern`
+* **`type VC_ApplicationName = string`**<br>application names are strings with 1...`maxApplicationNameLength` characters matching the regular expression `ApplicationNamePattern`
 * **`type VC_ApplicationRecord = {id:string, owner:string, subdomain:string, disabled:boolean, url:string, canonical_domain?:string, confirmation_url?:string, reset_url?:string, last_upload?:string, nice_links:boolean, cors_type:string, cors_domain?:string, frame_type:string, frame_domain?:string}`**<br>instances of this type are returned when details of an existing application are requested
 * **`type VC_ApplicationUpdate = {subdomain?:string, disabled?:boolean, canonical_domain?:string, confirmation_url?:string, reset_url?:string, nice_links?:boolean, cors_type?:string, cors_domain?:string, frame_type?:string, frame_domain?:string}`**<br>instances of this type are used when specific details of an existing application shall be changed
 * **`type VC_CustomerRecord = { id:string, email:VC_EMailAddress, first_name?:VC_NamePart, last_name?:VC_NamePart, confirmed:boolean, admin:boolean, meta?:any }`**<br>instances of this type are returned when details of an already registered user are requested
 * **`type VC_CustomerUpdate = { email?:VC_EMailAddress, password?:{ old:string, new:string, confirmation:string }, first_name?:string, last_name?:string }`**<br>instances of this type are used when specific details of an already registered user shall be changed
 * **`type VC_EMailAddress = string`**<br>the EMail addresses used to identify developers and customers are strings with up to `maxEMailAddressLength` characters
-* **`type VC_Password = string`**<br>VoltCloud passwords must be strings fulfilling the VoltCloud requirements for passwords
-* **`type VC_NamePart = string`**<br>the first and last names of any customer must be strings with up to `maxNamePartLength` characters
-* **`type VC_StorageKey = string`**<br>VoltCloud storage keys must be strings with a length of up to `maxStorageKeyLength` characters
-* **`type VC_StorageValue = string | undefined`**<br>VoltCloud storage values must be strings with a length of up to `maxStorageValueLength` characters. While VoltCloud itself responds with an error when non-existing entries are read, `voltcloud-for-applications` returns `undefined` instead
+* **`type VC_Password = string`**<br>VoltCloud passwords are strings fulfilling the VoltCloud requirements for passwords
+* **`type VC_NamePart = string`**<br>the first and last names of any customer are strings with up to `maxNamePartLength` characters
+* **`type VC_StorageKey = string`**<br>VoltCloud storage keys are strings with up to `maxStorageKeyLength` characters
+* **`type VC_StorageValue = string | undefined`**<br>VoltCloud storage values are strings with up to `maxStorageValueLength` characters. While VoltCloud itself responds with an error when non-existing entries are read, `voltcloud-for-applications` returns `undefined` instead
 * **`type VC_StorageSet = { [Key:string]:VC_StorageValue }`**<br>a VoltCloud storage can be seen as an associative array with literal keys and values
 
 ### exported Classification and Validation Functions ###
