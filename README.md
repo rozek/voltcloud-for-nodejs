@@ -38,6 +38,8 @@ Developers may inspect and change both an application's key-value store and the 
 
 Because of how VoltCloud works, `voltcloud-for-nodejs` may run in one of three modes, distinguished by "mandates":
 
-* without any "mandate", the library only allows to register and confirm new customers, resend confirmation messages and initiate or complete password resets
-* while logged-in as a developer, the library allows to create and manage applications and customers and their associated key-value stores
-* while logged-in as a customer, the library allows to manage that customer's account and key-value store.
+* independent of a "mandate" (and even without any), the library always allows to register and confirm new customers, resend confirmation messages and initiate or complete password resets
+* while logged-in as a developer, the library also allows to create and manage applications and customers and their associated key-value stores
+* while logged-in as a customer, the library also allows to manage that customer's account and key-value store.
+
+"Mandates" are set using one of the functions `actOnBehalfOfDeveloper` or `actOnBehalfOfCustomer`. Before one of these function is called, no "mandate" will be set. Any successful ###
