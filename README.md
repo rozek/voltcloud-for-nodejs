@@ -60,7 +60,21 @@ In contrast to Java, it's not very common in JavaScript to throw specific subcla
 
 ### exported Constants ###
 
+`voltcloud-for-nodejs` exports the following constants:
+
+* **`const ApplicationIdPattern = /^[a-zA-Z0-9]{6,}$/`**<br>defines the regular expression pattern to which each VoltCloud application id must match
+* **`const ApplicationNamePattern = /^([a-z0-9]|[a-z0-9][-a-z0-9]*[a-z0-9])$/`**<br>defines the regular expression pattern to which each VoltCloud application name must match
+* **`const maxApplicationNameLength = 63`**<br>defines the maximum length of any VoltCloud application name
+* **`const maxEMailAddressLength = 255`**<br>defines the maximum length of the email address used to identify developers and customers
+* **`const maxNamePartLength = 255`**<br>defines the maximum length of the first or last name of any customer
+* **`const maxStorageKeyLength = 255`**<br>defines the maximum length of any *key* in a VoltCloud key-value store
+* **`const maxStorageValueLength = 1048574`**<br>defines the maximum length of any *value* in a VoltCloud key-value store
+
 ### exported Types ###
+
+TypeScript programmers may import the following types in order to benefit from static type checking (JavaScript programmers may simply skip this section):
+
+
 
 ### exported Classification and Validation Functions ###
 
