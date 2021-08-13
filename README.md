@@ -42,4 +42,4 @@ Because of how VoltCloud works, `voltcloud-for-nodejs` may run in one of three m
 * while logged-in as a developer, the library also allows to create and manage applications and customers and their associated key-value stores
 * while logged-in as a customer, the library also allows to manage that customer's account and key-value store.
 
-"Mandates" are set using one of the functions `actOnBehalfOfDeveloper` or `actOnBehalfOfCustomer`. Before one of these function is called, no "mandate" will be set. Any successful ###
+"Mandates" are set using one of the functions `actOnBehalfOfDeveloper` or `actOnBehalfOfCustomer`. Before any of these function is called, no "mandate" will be set. Any successful completion of `actOnBehalfOfDeveloper` or `actOnBehalfOfCustomer` will change the currently active mandate to that of the given developer or customer, resp.
