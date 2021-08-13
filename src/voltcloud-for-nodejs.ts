@@ -1304,7 +1304,7 @@
 /**** loginDeveloper ****/
 
   async function loginDeveloper (
-    EMailAddress:string, Password:string
+    EMailAddress:string, Password:string, firstAttempt:boolean = true
   ):Promise<void> {
     activeDeveloperId       = undefined            // avoid re-try after failure
     activeDeveloperAddress  = undefined                                  // dto.
@@ -1321,13 +1321,16 @@
 
     let Response
     try {
+      activeDeveloperAddress  = EMailAddress  // needed in case of login failure
+      activeDeveloperPassword = Password
+
       Response = await ResponseOf(
         'public', 'POST', '{{dashboard_url}}/api/auth/login', null, {
           grant_type: 'password',
           username:   EMailAddress,
           password:   Password,
           scope:      DashboardId
-        }
+        }, firstAttempt
       )
     } catch (Signal) {
       switch (Signal.HTTPStatus) {
@@ -1341,12 +1344,12 @@
       (Response.token_type === 'bearer') && ValueIsString(Response.access_token) &&
       ValueIsString(Response.user_id)
     ) {
-      activeDeveloperId       = Response.user_id
-      activeDeveloperAddress  = EMailAddress
-      activeDeveloperPassword = Password
-
+      activeDeveloperId = Response.user_id
       activeAccessToken = Response.access_token
     } else {
+      activeDeveloperAddress  = undefined
+      activeDeveloperPassword = undefined
+
       throwError('InternalError: could not analyze response for login request')
     }
   }
@@ -1354,7 +1357,7 @@
 /**** loginCustomer ****/
 
   async function loginCustomer (
-    EMailAddress:string, Password:string
+    EMailAddress:string, Password:string, firstAttempt:boolean = true
   ):Promise<void> {
     activeCustomerId       = undefined             // avoid re-try after failure
     activeCustomerAddress  = undefined                                   // dto.
@@ -1371,13 +1374,16 @@
 
     let Response
     try {
+      activeCustomerAddress  = EMailAddress   // needed in case of login failure
+      activeCustomerPassword = Password
+
       Response = await ResponseOf(
         'public', 'POST', '{{application_url}}/api/auth/login', null, {
           grant_type: 'password',
           username:   EMailAddress,
           password:   Password,
           scope:      currentApplicationId
-        }
+        }, firstAttempt
       )
     } catch (Signal) {
       switch (Signal.HTTPStatus) {
@@ -1391,15 +1397,15 @@
       (Response.token_type === 'bearer') && ValueIsString(Response.access_token) &&
       ValueIsString(Response.user_id)
     ) {
-      activeCustomerId       = Response.user_id
-      activeCustomerAddress  = EMailAddress
-      activeCustomerPassword = Password
-
+      activeCustomerId  = Response.user_id
       activeAccessToken = Response.access_token
 
       currentCustomerId      = Response.user_id // auto-focus logged-in customer
       currentCustomerAddress = EMailAddress                              // dto.
     } else {
+      activeCustomerAddress  = undefined
+      activeCustomerPassword = undefined
+
       throwError('InternalError: could not analyze response for login request')
     }
   }
@@ -1497,9 +1503,9 @@
             case (StatusCode === 401):
               if (firstAttempt) {         // try to "refresh" the access token
                 return (
-                  activeCustomerId == null
-                  ? loginDeveloper(activeDeveloperAddress as string, activeDeveloperPassword as string)
-                  : loginCustomer (activeCustomerAddress  as string, activeCustomerPassword  as string)
+                  activeDeveloperAddress != null  // also catches login failures
+                  ? loginDeveloper(activeDeveloperAddress as string, activeDeveloperPassword as string, false)
+                  : loginCustomer (activeCustomerAddress  as string, activeCustomerPassword  as string, false)
                 )
                 .then(() => {                // try request again, but only once
                   ResponseOf(Mode, Method, URL, Parameters, Data, false)
