@@ -97,7 +97,7 @@ TypeScript programmers may import the following types in order to benefit from s
 * **`ValueIsStorageValue (Value:any):boolean`**<br>returns `true` if the given value may be used as a *value* in a VoltCloud key-value store or `false` otherwise
 * **`expectStorageValue (Description:string, Argument:any):string`**<br>checks if the given `Argument` (if it exists), may be used as a *value* for a VoltCloud key-value store. If this is the case (or `Argument` is missing), the function returns the primitive value of the given `Argument`, otherwise an error with the message `"the given ${Description} is no valid VoltCloud storage value"` is thrown, which uses the given `Description`. Similar to the [javascript-interface-library](https://github.com/rozek/javascript-interface-library), the variants `allowedStorageValue`, `expectStorageValue` and `expectedStorageValue` exist here as well
 
-### exported Functions without need for a Mandate ###
+### exported VoltCloud Functions not requiring any Mandate ###
 
 * **`async function focusOnApplication (ApplicationIdOrURL:string):Promise<void>`**<br>sets the application given by `ApplicationIdOrURL` as the target for all following application-specific requests. When used without any mandate, `ApplicationIdOrURL` must contain the complete URL of the requested application - when used with a developer mandate, `ApplicationIdOrURL` must contain the requested application's internal id. The function will fail, if no such application exists<br>&nbsp;<br>
 * **`async function focusOnNewCustomer (EMailAddress:string, Password:string):Promise<void>`**<br>registers a new customer with the email address given by `EMailAddress`, configures the given `Password` as the initial password and sets him/her as the target for all following (customer-specific) requests. If configured for the current target application, this request will automatically send a customer confirmation email to the given address<br>&nbsp;<br>
@@ -106,7 +106,7 @@ TypeScript programmers may import the following types in order to benefit from s
 * **`async function startPasswordResetForCustomer (EMailAddress?:string):Promise<void>`**<br>if configured for the current target application, this function will send a password reset email to the address given by `EMailAddress` - if no such address is given, that email is sent to the current target customer
 * **`async function resetCustomerPasswordUsing (Token:string, Password:string):Promise<void>`**<br>sets `Password` as the new password for a customer by providing the `Token` sent as part of a password reset email. This token internally also specifies the customer to whom it was sent
 
-### exported Functions for Developer and Customer Mandates ###
+### exported VoltCloud Functions requiring either a Developer or a Customer Mandate ###
 
 * **`async function actOnBehalfOfDeveloper (EMailAddress:string, Password:string):Promise<void>`**<br>uses the given `EMailAddress` and `Password` to request an "access token" from VoltCloud, which is then used to authorize any non-public VoltCloud operation that is intended for application developers only. Note: `EMailAddress` and `Password` are kept in memory while the process is running in order to automatically refresh the token upon expiry
 * **`async function actOnBehalfOfCustomer (EMailAddress:string, Password:string):Promise<void>`**<br>uses the given `EMailAddress` and `Password` to request an "access token" from VoltCloud, which is then used to authorize any non-public VoltCloud operation that is intended for application customers only. Note: `EMailAddress` and `Password` are kept in memory while the process is running in order to automatically refresh the token upon expiry<br>&nbsp;<br>
@@ -120,7 +120,7 @@ TypeScript programmers may import the following types in order to benefit from s
 * **`async function deleteCustomerStorageEntry (StorageKey:VC_StorageKey):Promise<void>`**<br>removes the entry given by `StorageKey` from the key-value store for the current target customer. It is ok to "delete" a non-existing entry (this function is "idempotent")
 * **`async function clearCustomerStorage ():Promise<void>`**<br>removes all entries from the key-value store for the current target customer. It is ok to "clear" an empty store (this function is "idempotent")
 
-### exported Functions for Developer Mandates ###
+### exported VoltCloud Functions requiring a Developer Mandate ###
 
 * **`async function ApplicationRecords ():Promise<VC_ApplicationRecord[]>`**<br>retrieves a (potentially empty) list with the details of all applications created by the currently configured developer. See above for the internals of the delivered list items<br>&nbsp;<br>
 * **`async function focusOnApplicationCalled (ApplicationName:VC_ApplicationName):Promise<void>`**<br>sets the application given by `ApplicationName` as the target for all following application-specific requests. The function will fail, if no such application exists for the currently configured developer
@@ -139,7 +139,7 @@ TypeScript programmers may import the following types in order to benefit from s
 
 Note: additionally, developers may also call any functions mentioned in the previous sections, which do either not require any mandate or may be used with developer or customer mandates
 
-### exported Functions for Customer Mandates ###
+### exported VoltCloud Functions requiring a Customer Mandate ###
 
 * **`async function changeCustomerEMailAddressTo (EMailAddress:string):Promise<void>`**<br>changes the EMail address of the currently configured customer to `EMailAddress`. No customer with that address must currently be registered for the current target application or the function will fail
 * **`async function changeCustomerPasswordTo (Password:string):Promise<void>`**<br>changes the password of the currently configured customer to `Password`
