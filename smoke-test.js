@@ -56,7 +56,7 @@
     process.exit(2)
   }
 
-  const CustomerAddress = process.env.customer_email_address
+  let CustomerAddress = process.env.customer_email_address
   if (CustomerAddress == null) {
     console.error(
       'please, set environment variable "customer_email_address" to the ' +
@@ -66,7 +66,7 @@
     process.exit(3)
   }
 
-  const CustomerPassword = process.env.customer_password
+  let CustomerPassword = process.env.customer_password
   if (CustomerPassword == null) {
     console.error(
       'please, set environment variable "customer_password" to the ' +
@@ -404,12 +404,16 @@
 /**** change customer email address ****/
 
   await changeCustomerEMailAddressTo('a.b@c.d')
-  await actOnBehalfOfCustomer('a.b@c.d',CustomerPassword) // should work now!
+
+  CustomerAddress = 'a.b@c.d'
+  await actOnBehalfOfCustomer(CustomerAddress,CustomerPassword)
 
 /**** change customer password ****/
 
   await changeCustomerPasswordTo('an0ther-Passw0rd')
-  await actOnBehalfOfCustomer('a.b@c.d','an0ther-Passw0rd') // should work!
+
+  CustomerPassword = 'an0ther-Passw0rd'
+  await actOnBehalfOfCustomer(CustomerAddress,CustomerPassword)
 
 /**** change customer password ****/
 
@@ -419,7 +423,7 @@
 
 /**** test "CustomerRecord" ****/
 
-  CustomerInfo = CustomerRecord()
+  CustomerInfo = await CustomerRecord()
 
   console.log('- current customer settings:')
   console.log('  - internal id:   ', CustomerInfo.id)
