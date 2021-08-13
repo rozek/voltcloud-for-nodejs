@@ -84,7 +84,7 @@
 
 /**** let's start ****/
 
-  console.log('focusing on developer "' + DeveloperAddress + '"')
+  console.log('acting on behalf of developer "' + DeveloperAddress + '"')
 
   await actOnBehalfOfDeveloper(DeveloperAddress,DeveloperPassword)
 
@@ -164,7 +164,7 @@
 
 /**** test ApplicationStorage management ****/
 
-  console.log('- testing application storage management')
+  console.log('- testing application storage management (for developer)')
 
   StoreValue = await ApplicationStorageEntry('missing-key')
   expect(StoreValue).not.to.exist
@@ -208,6 +208,10 @@
   ApplicationStore = await ApplicationStorage()
   expect(KeysOf(ApplicationStore).length).to.equal(0)
 
+/**** prepare for later ****/
+
+  await setApplicationStorageEntryTo('key-1','value-1')
+
 /**** if possible: test file upload ****/
 
   let Archive
@@ -229,15 +233,31 @@
     expect(ApplicationInfo.last_upload).to.exist
   }
 
-/**** scan CustomerRecords ****/
+/**** delete existing customers ****/
 
   let CustomerRecordList = await CustomerRecords()
   expect(CustomerRecordList).to.be.an('array')
 
-  CustomerRecordList.forEach((CustomerRecord) => {
-    if (CustomerRecord.email === CustomerAddress) {
+  CustomerRecordList.forEach(async (CustomerRecord) => {
+    if (CustomerRecord.email === CustomerAddress) { // don't touch test customer
       CustomerId = CustomerRecord.id
+      await focusOnCustomer(CustomerRecord.id)
+
+      if (
+        (CustomerRecord.confirmed == false) ||
+        ((await CustomerStorageEntry('password-reset')) === 'pending')
+      ) {          // indeed, we should keep this customer as we just created it
+        console.log('- keeping customer "' + CustomerAddress + '"')
+        return
+      }
+
+      CustomerId = null                // will trigger customer recreation later
     }
+
+    console.log('- deleting customer "' + CustomerRecord.email + '"')
+
+    await focusOnCustomer(CustomerRecord.id)
+    await deleteCustomer()
   })
 
 /**** if need be: create new customer ****/
@@ -328,7 +348,7 @@
 
 /**** test CustomerStorage management ****/
 
-  console.log('- testing customer storage management')
+  console.log('- testing customer storage management (for developer)')
 
   await clearCustomerStorage()                 // removes "password-reset" entry
 
@@ -374,10 +394,111 @@
   CustomerStore = await CustomerStorage()
   expect(KeysOf(CustomerStore).length).to.equal(0)
 
+/**** let's continue with a developer mandate ****/
+
+  console.log('acting on behalf of customer "' + DeveloperAddress + '"')
+
+//await focusOnApplicationCalled(ApplicationName)
+  await actOnBehalfOfCustomer(CustomerAddress,CustomerPassword)
+
+/**** change customer email address ****/
+
+  await changeCustomerEMailAddressTo('a.b@c.d')
+  await actOnBehalfOfCustomer('a.b@c.d',CustomerPassword) // should work now!
+
+/**** change customer password ****/
+
+  await changeCustomerPasswordTo('an0ther-Passw0rd')
+  await actOnBehalfOfCustomer('a.b@c.d','an0ther-Passw0rd') // should work!
+
+/**** change customer password ****/
+
+  await updateCustomerRecordBy({
+    first_name:'John', last_name:'Doe'
+  })
+
+/**** test "CustomerRecord" ****/
+
+  CustomerInfo = CustomerRecord()
+
+  console.log('- current customer settings:')
+  console.log('  - internal id:   ', CustomerInfo.id)
+  console.log('  - EMail address: ', CustomerInfo.email)
+  console.log('  - confirmed:     ', CustomerInfo.confirmed ? 'yes' : 'no')
+  console.log('  - first name:    ', CustomerInfo.first_name || '(unknown)')
+  console.log('  - last name:     ', CustomerInfo.last_name  || '(unknown)')
+
+/**** test ApplicationStorage management ****/
+
+  console.log('- testing application storage management (for customer)')
+
+  StoreValue = await ApplicationStorageEntry('missing-key')
+  expect(StoreValue).not.to.exist
+
+
+  StoreValue = await ApplicationStorageEntry('key-1')
+  expect(StoreValue).to.equal('value-1')
+
+  ApplicationStore = await ApplicationStorage()
+  expect(KeysOf(ApplicationStore)).to.have.members(['key-1'])
+
+/**** test CustomerStorage management ****/
+
+  console.log('- testing customer storage management (for customer)')
+
+  StoreValue = await CustomerStorageEntry('missing-key')
+  expect(StoreValue).not.to.exist
+
+
+  await setCustomerStorageEntryTo('key-1','value-1')
+
+  StoreValue = await CustomerStorageEntry('key-1')
+  expect(StoreValue).to.equal('value-1')
+
+  CustomerStore = await CustomerStorage()
+  expect(KeysOf(CustomerStore)).to.have.members(['key-1'])
+
+
+  await setCustomerStorageEntryTo('key-1','value-2')
+
+  StoreValue = await CustomerStorageEntry('key-1')
+  expect(StoreValue).to.equal('value-2')
+
+  CustomerStore = await CustomerStorage()
+  expect(KeysOf(CustomerStore)).to.have.members(['key-1'])
+
+
+  await deleteCustomerStorageEntry('missing-key')
+
+
+  await deleteCustomerStorageEntry('key-1')
+
+  StoreValue = await CustomerStorageEntry('key-1')
+  expect(StoreValue).not.to.exist
+
+  CustomerStore = await CustomerStorage()
+  expect(KeysOf(CustomerStore).length).to.equal(0)
+
+/**** test "clearCustomerStorage" explicitly ****/
+
+  await setCustomerStorageEntryTo('key-1','value-1')
+
+  await clearCustomerStorage()
+
+  CustomerStore = await CustomerStorage()
+  expect(KeysOf(CustomerStore).length).to.equal(0)
+
 /**** deleteCustomer ****/
 
-  console.log('- deleting customer "' + CustomerAddress + '"')
+  console.log('- deleting customer')
   await deleteCustomer()
+
+/**** let's continue with a developer mandate ****/
+
+  console.log('acting on behalf of developer "' + DeveloperAddress + '" again')
+
+  await actOnBehalfOfDeveloper(DeveloperAddress,DeveloperPassword)
+  await focusOnApplicationCalled(ApplicationName)
 
 /**** deleteApplication ****/
 
