@@ -24,6 +24,8 @@ Users may register themselves for a VoltCloud application by providing their EMa
 
 Should a customer forget his/ger password, there is also the possibility to initiate a "password reset" process. If triggered, a "password reset email" with a special link to the application will be sent to the customer which, when clicked, should allow the customer to change his/her password. A password reset may be triggered as often as needed.
 
+> special note for german customers: for an unknown reason, customer confirmation or password reset message take quite a while (approx. 2 hours) to reach mailboxes hosted by GMX and Web.de - if you need s.th. to test with, try address at Mail.de, those seem to be much faster right now.
+
 It is important to understand, that an application and a customer who registered for it form a unit. As a consequence, the EMail address may be used for multiple applications - and all customers with that address will be completely independent from each other. VoltCloud does *not* offer any possibility to extend a given registration to other applications.
 
 Once confirmed, a customer may set a first and/or a last name, change his/her password and even configure a new EMail address.
@@ -109,7 +111,7 @@ TypeScript programmers may import the following types in order to benefit from s
 ### exported VoltCloud Functions requiring either a Developer or a Customer Mandate ###
 
 * **`async function actOnBehalfOfDeveloper (EMailAddress:string, Password:string):Promise<void>`**<br>uses the given `EMailAddress` and `Password` to request an "access token" from VoltCloud, which is then used to authorize any non-public VoltCloud operation that is intended for application developers only. Note: `EMailAddress` and `Password` are kept in memory while the process is running in order to automatically refresh the token upon expiry
-* **`async function actOnBehalfOfCustomer (EMailAddress:string, Password:string):Promise<void>`**<br>uses the given `EMailAddress` and `Password` to request an "access token" from VoltCloud, which is then used to authorize any non-public VoltCloud operation that is intended for application customers only. Note: `EMailAddress` and `Password` are kept in memory while the process is running in order to automatically refresh the token upon expiry<br>&nbsp;<br>
+* **`async function actOnBehalfOfCustomer (EMailAddress:string, Password:string):Promise<void>`**<br>uses the given `EMailAddress` and `Password` to request an "access token" from VoltCloud, which is then used to authorize any non-public VoltCloud operation that is intended for application customers only. This request requires to focus on an application first, since customers are application-specific. Note: `EMailAddress` and `Password` are kept in memory while the process is running in order to automatically refresh the token upon expiry<br>&nbsp;<br>
 * **`async function ApplicationStorage ():Promise<VC_StorageSet>`**<br>retrieves the complete key-value store for the current target application and delivers it as a JavaScript object
 * **`async function ApplicationStorageEntry (StorageKey:VC_StorageKey):Promise<VC_StorageValue | undefined>`**<br>retrieves an entry (given by `StorageKey`) from the key-value store for the current target application and returns its value (as a JavaScript string) - or `undefined` if the requested entry does not exist<br>&nbsp;<br>
 * **`async function CustomerRecord (CustomerId?:string):Promise<VC_CustomerRecord | undefined>`**<br>retrieves a record with all current VoltCloud settings for the customer given by `CustomerId` - if no such id is given, the current target customer's record will be retrieved. If no such customer exists (for the current target application), `undefined` is returned instead. See above for the internals of the delivered object
@@ -184,10 +186,40 @@ import {
 
 Just copy that statement into your source code and remove all unwanted functions.
 
+## Smoke Test ##
 
+This repository contains a small "smoke test" (in a file called "smoke-test.js") which may also serve as an example for how to use `voltcloud-for-nodejs`. It illustrates the "good cases" of all functions offered by this library.
 
+### Preparation ###
 
+The test becomes available if you download this repository (either using [git](https://git-scm.com/) in any of its variants or by unpacking a downloaded a [ZIP archive containing this repo](https://github.com/rozek/voltcloud-for-nodejs/archive/refs/heads/main.zip))
 
+Now navigate to the folder containg the files of this repository and run
+
+```
+npm install
+```
+
+once in order to install any dependencies for the test.
+
+The smoke test itself may be configured using the following set of environment variables:
+
+* **`developer_email_address`** - set this to the email address of the developer for whom the test should run
+* **`developer_password`** - set this to the developer's password
+* **`customer_email_address`** - set this to an email address (different from that for the developer!) you have access to. It will become the address of a "customer"
+* **`customer_password`** - set this to the "customer"s password (which must meet the VoltCLoud password requirements)
+* **`customer_confirmation_token`** - initially, this variable should remain blank. Follow the instructions given by "smoke-test.js" to set it to a customer confirmation token when needed
+* **`customer_password_reset_token`** - initially, this variable should remain blank. Follow the instructions given by "smoke-test.js" to set it to a password reset token when needed
+
+### Execution ###
+
+The test may be started from within a shell using
+
+```
+node smoke-test.js
+```
+
+Important: for all procedures to get tested, you will have to start the script four times - in between, you may have to set the environment variables `customer_confirmation_token` or `customer_password_reset_token` following the instructions printed on the console
 
 ## Build Instructions ##
 
