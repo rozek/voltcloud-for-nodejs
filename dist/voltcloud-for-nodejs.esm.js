@@ -293,6 +293,7 @@ function actOnBehalfOfCustomer(EMailAddress, Password) {
                 case 0:
                     expectEMailAddress('VoltCloud customer email address', EMailAddress);
                     expectPassword('VoltCloud customer password', Password);
+                    assertApplicationFocus();
                     return [4 /*yield*/, loginCustomer(EMailAddress, Password)];
                 case 1:
                     _a.sent();
@@ -324,9 +325,8 @@ function focusOnApplication(ApplicationIdOrURL) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    if (!(activeCustomerId == null)) return [3 /*break*/, 2];
+                    if (!(activeDeveloperId != null)) return [3 /*break*/, 2];
                     expectNonEmptyString('VoltCloud application id', ApplicationIdOrURL);
-                    assertDeveloperMandate();
                     currentApplicationId = undefined;
                     currentApplicationURL = undefined;
                     return [4 /*yield*/, ApplicationRecords()];
@@ -619,7 +619,7 @@ function deleteApplication(ApplicationId) {
 /**** ApplicationStorage ****/
 function ApplicationStorage() {
     return __awaiter(this, void 0, void 0, function () {
-        var Response, Signal_6;
+        var Response, URL_1, Signal_6;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -628,7 +628,8 @@ function ApplicationStorage() {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, ResponseOf('private', 'GET', '{{dashboard_url}}/api/storage/{{application_id}}')];
+                    URL_1 = (activeCustomerId == null ? '{{dashboard_url}}' : '{{application_url}}');
+                    return [4 /*yield*/, ResponseOf('private', 'GET', URL_1 + '/api/storage/{{application_id}}')];
                 case 2:
                     Response = _a.sent();
                     return [3 /*break*/, 4];
@@ -657,7 +658,7 @@ function ApplicationStorage() {
 /**** ApplicationStorageEntry ****/
 function ApplicationStorageEntry(StorageKey) {
     return __awaiter(this, void 0, void 0, function () {
-        var Response, Signal_7;
+        var Response, URL_2, Signal_7;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -667,7 +668,8 @@ function ApplicationStorageEntry(StorageKey) {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, ResponseOf('private', 'GET', '{{dashboard_url}}/api/storage/{{application_id}}/key/{{application_storage_key}}', {
+                    URL_2 = (activeCustomerId == null ? '{{dashboard_url}}' : '{{application_url}}');
+                    return [4 /*yield*/, ResponseOf('private', 'GET', URL_2 + '/api/storage/{{application_id}}/key/{{application_storage_key}}', {
                             application_storage_key: StorageKey
                         })];
                 case 2:
@@ -1333,7 +1335,7 @@ function updateCustomerRecordBy(Settings) {
 /**** deleteCustomer ****/
 function deleteCustomer() {
     return __awaiter(this, void 0, void 0, function () {
-        var Signal_21;
+        var URL_3, Signal_21;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -1343,7 +1345,8 @@ function deleteCustomer() {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, ResponseOf('private', 'DELETE', '{{dashboard_url}}/api/user/{{customer_id}}')];
+                    URL_3 = (activeCustomerId == null ? '{{dashboard_url}}' : '{{application_url}}');
+                    return [4 /*yield*/, ResponseOf('private', 'DELETE', URL_3 + '/api/user/{{customer_id}}')];
                 case 2:
                     _a.sent();
                     return [3 /*break*/, 4];
@@ -1370,7 +1373,7 @@ function deleteCustomer() {
 /**** CustomerStorage ****/
 function CustomerStorage() {
     return __awaiter(this, void 0, void 0, function () {
-        var Response, Signal_22;
+        var Response, URL_4, Signal_22;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -1380,7 +1383,8 @@ function CustomerStorage() {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, ResponseOf('private', 'GET', '{{dashboard_url}}/api/storage/{{customer_id}}')];
+                    URL_4 = (activeCustomerId == null ? '{{dashboard_url}}' : '{{application_url}}');
+                    return [4 /*yield*/, ResponseOf('private', 'GET', URL_4 + '/api/storage/{{customer_id}}')];
                 case 2:
                     Response = _a.sent();
                     return [3 /*break*/, 4];
@@ -1409,7 +1413,7 @@ function CustomerStorage() {
 /**** CustomerStorageEntry ****/
 function CustomerStorageEntry(StorageKey) {
     return __awaiter(this, void 0, void 0, function () {
-        var Response, Signal_23;
+        var Response, URL_5, Signal_23;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -1420,7 +1424,8 @@ function CustomerStorageEntry(StorageKey) {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, ResponseOf('private', 'GET', '{{dashboard_url}}/api/storage/{{customer_id}}/key/{{customer_storage_key}}', {
+                    URL_5 = (activeCustomerId == null ? '{{dashboard_url}}' : '{{application_url}}');
+                    return [4 /*yield*/, ResponseOf('private', 'GET', URL_5 + '/api/storage/{{customer_id}}/key/{{customer_storage_key}}', {
                             customer_storage_key: StorageKey
                         })];
                 case 2:
@@ -1456,7 +1461,7 @@ function CustomerStorageEntry(StorageKey) {
 /**** setCustomerStorageEntryTo ****/
 function setCustomerStorageEntryTo(StorageKey, StorageValue) {
     return __awaiter(this, void 0, void 0, function () {
-        var Signal_24;
+        var URL_6, Signal_24;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -1468,7 +1473,8 @@ function setCustomerStorageEntryTo(StorageKey, StorageValue) {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, ResponseOf('private', 'PUT', '{{dashboard_url}}/api/storage/{{customer_id}}/key/{{customer_storage_key}}', {
+                    URL_6 = (activeCustomerId == null ? '{{dashboard_url}}' : '{{application_url}}');
+                    return [4 /*yield*/, ResponseOf('private', 'PUT', URL_6 + '/api/storage/{{customer_id}}/key/{{customer_storage_key}}', {
                             customer_storage_key: StorageKey
                         }, StorageValue)];
                 case 2:
@@ -1502,7 +1508,7 @@ function setCustomerStorageEntryTo(StorageKey, StorageValue) {
 /**** deleteCustomerStorageEntry ****/
 function deleteCustomerStorageEntry(StorageKey) {
     return __awaiter(this, void 0, void 0, function () {
-        var Signal_25;
+        var URL_7, Signal_25;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -1513,7 +1519,8 @@ function deleteCustomerStorageEntry(StorageKey) {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, ResponseOf('private', 'DELETE', '{{dashboard_url}}/api/storage/{{customer_id}}/key/{{customer_storage_key}}', {
+                    URL_7 = (activeCustomerId == null ? '{{dashboard_url}}' : '{{application_url}}');
+                    return [4 /*yield*/, ResponseOf('private', 'DELETE', URL_7 + '/api/storage/{{customer_id}}/key/{{customer_storage_key}}', {
                             customer_storage_key: StorageKey
                         })];
                 case 2:
@@ -1546,7 +1553,7 @@ function deleteCustomerStorageEntry(StorageKey) {
 /**** clearCustomerStorage ****/
 function clearCustomerStorage() {
     return __awaiter(this, void 0, void 0, function () {
-        var Signal_26;
+        var URL_8, Signal_26;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -1556,7 +1563,8 @@ function clearCustomerStorage() {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, ResponseOf('private', 'DELETE', '{{dashboard_url}}/api/storage/{{customer_id}}')];
+                    URL_8 = (activeCustomerId == null ? '{{dashboard_url}}' : '{{application_url}}');
+                    return [4 /*yield*/, ResponseOf('private', 'DELETE', URL_8 + '/api/storage/{{customer_id}}')];
                 case 2:
                     _a.sent();
                     return [3 /*break*/, 4];
@@ -1733,8 +1741,8 @@ function loginCustomer(EMailAddress, Password) {
                         activeCustomerAddress = EMailAddress;
                         activeCustomerPassword = Password;
                         activeAccessToken = Response.access_token;
-                        currentCustomerId = undefined; // auto-focus the logged-incustomer
-                        currentCustomerAddress = undefined; // dto.
+                        currentCustomerId = Response.user_id; // auto-focus logged-in customer
+                        currentCustomerAddress = EMailAddress; // dto.
                     }
                     else {
                         throwError('InternalError: could not analyze response for login request');
