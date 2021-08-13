@@ -46,6 +46,17 @@ Because of how VoltCloud works, `voltcloud-for-nodejs` may run in one of three m
 
 Mandates may be changed as often as needed and allow `voltcloud-for-nodejs` to be used both for VoltCloud applications (running with customer mandates) and servers (running with developer mandates)
 
+#### Focusing ####
+
+Because `voltcloud-for-nodejs` is most often used for a specific VoltCloud application and/or for a specific csutomer only, it is possible to "focus" on that application or customer using `focusOnApplication`, `focusOnApplicationCalled`, `focusOnCustomer` or `focusOnCustomerWithAddress`, resp. If a new application is created (using `focusOnNewApplication`) or a new customer registered (using `focusOnNewCustomer`), that one is automatically focused. Additionally, running on behalf of a customer also automatically focuses that customer.
+
+Normally, all application- or customer-specific functions require such a focus. Only `resendConfirmationEMailToCustomer`, `confirmCustomerUsing`, `startPasswordResetForCustomer`, `resetCustomerPasswordUsing` and `CustomerRecord` may be run without a customer focus by providing (a token or) the email address of the curernt target customer.
+
+
+
+
+
+
 ## Prerequisites ##
 
 `voltcloud-for-nodejs` has been built for and, thus, requires [Node.js](https://nodejs.org/). Since you are visiting this page, chances are good that you already have Node.js installed on your machine - if not, please follow the instructions found on nodejs.org to install it (the LTS version is sufficient if you prefer that)
