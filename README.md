@@ -34,7 +34,7 @@ VoltCloud also manages individual key-value stores for an application and each o
 
 Developers may inspect and change both an application's key-value store and the stores of all related customers, while customers themselves may inspect and change their own store, but only inspect (and *not* change) the store of the application they registered for.
 
-#### Mandating ####
+### Mandating ###
 
 Because of how VoltCloud works, `voltcloud-for-nodejs` may run in one of three modes, distinguished by "mandates":
 
@@ -46,7 +46,7 @@ Because of how VoltCloud works, `voltcloud-for-nodejs` may run in one of three m
 
 Mandates may be changed as often as needed and allow `voltcloud-for-nodejs` to be used both for VoltCloud applications (running with customer mandates) and servers (running with developer mandates)
 
-#### Focusing ####
+### Focusing ###
 
 Because `voltcloud-for-nodejs` is most often used for a specific VoltCloud application and/or for a specific csutomer only, it is possible to "focus" on that application or customer using `focusOnApplication`, `focusOnApplicationCalled`, `focusOnCustomer` or `focusOnCustomerWithAddress`, resp. If a new application is created (using `focusOnNewApplication`) or a new customer registered (using `focusOnNewCustomer`), that one is automatically focused. Additionally, running on behalf of a customer also automatically focuses that customer.
 
