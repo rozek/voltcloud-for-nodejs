@@ -50,9 +50,9 @@ Mandates may be changed as often as needed and allow `voltcloud-for-nodejs` to b
 
 ### Focusing ###
 
-Because `voltcloud-for-nodejs` is most often used for a specific VoltCloud application and/or for a specific csutomer only, it is possible to "focus" on that application or customer using `focusOnApplication`, `focusOnApplicationCalled`, `focusOnCustomer` or `focusOnCustomerWithAddress`, resp. If a new application is created (using `focusOnNewApplication`) or a new customer registered (using `focusOnNewCustomer`), that one is automatically focused. Additionally, running on behalf of a customer also automatically focuses that customer.
+Because `voltcloud-for-nodejs` is most often used for a specific VoltCloud application and/or for a specific customer only, it is possible to "focus" on that application or customer using `focusOnApplication`, `focusOnApplicationCalled`, `focusOnCustomer` or `focusOnCustomerWithAddress`, resp. If a new application is created (using `focusOnNewApplication`) or a new customer registered (using `focusOnNewCustomer`), that one is automatically focused. Additionally, running on behalf of a customer also automatically focuses that customer.
 
-Normally, all application- or customer-specific functions require such a focus. Only `resendConfirmationEMailToCustomer`, `confirmCustomerUsing`, `startPasswordResetForCustomer`, `resetCustomerPasswordUsing` and `CustomerRecord` may be run without a customer focus by providing (a token or) the email address of the curernt target customer.
+Normally, all application- or customer-specific functions require such a focus. Only `resendConfirmationEMailToCustomer`, `confirmCustomerUsing`, `startPasswordResetForCustomer`, `resetCustomerPasswordUsing` and `CustomerRecord` may be run without a customer focus by providing (a token or) the email address of the current target customer.
 
 ### Error Handling ###
 
@@ -181,7 +181,7 @@ import {
     updateCustomerRecordBy, deleteCustomer,
   CustomerStorage, CustomerStorageEntry, setCustomerStorageEntryTo,
     deleteCustomerStorageEntry, clearCustomerStorage
-} from 'voltcloud-for-servers'
+} from 'voltcloud-for-nodejs'
 ```
 
 Just copy that statement into your source code and remove all unwanted functions.
