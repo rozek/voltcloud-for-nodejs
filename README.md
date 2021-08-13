@@ -52,7 +52,23 @@ Because `voltcloud-for-nodejs` is most often used for a specific VoltCloud appli
 
 Normally, all application- or customer-specific functions require such a focus. Only `resendConfirmationEMailToCustomer`, `confirmCustomerUsing`, `startPasswordResetForCustomer`, `resetCustomerPasswordUsing` and `CustomerRecord` may be run without a customer focus by providing (a token or) the email address of the curernt target customer.
 
+### Error Handling ###
 
+In contrast to Java, it's not very common in JavaScript to throw specific subclasses of `Error` depending on the type of error that occurred. `voltcloud-for-nodejs` therefore throws "named errors", i.e., instances of `Error` which contain a `name` and a `message` property. The `name` property distinguishes the various error "types" and may be easily used in a `switch` statement to perform some type-specific error handling.
+
+## API Reference ##
+
+### exported Constants ###
+
+### exported Types ###
+
+### exported Classification and Validation Functions ###
+
+### exported Functions independent of any Mandate ###
+
+### exported Functions for Developer Mandates ###
+
+### exported Functions for Customer Mandates ###
 
 
 
