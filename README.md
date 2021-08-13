@@ -33,3 +33,11 @@ A developer may request a list of all customers which registered for a given app
 VoltCloud also manages individual key-value stores for an application and each of its customers. Both keys and values have to be strings (keys may be up to 255 characters long, values up to 1048574 characters). As is common practice, new entries may be created at will, existing entries read or deleted and a list of all entries requested from VoltCloud.
 
 Developers may inspect and change both an application's key-value store and the stores of all related customers, while customers themselves may inspect and change their own store, but only inspect (and *not* change) the store of the application they registered for.
+
+#### Mandating ####
+
+Because of how VoltCloud works, `voltcloud-for-nodejs` may run in one of three modes, distinguished by "mandates":
+
+* without any "mandate", the library only allows to register and confirm new customers, resend confirmation messages and initiate or complete password resets
+* while logged-in as a developer, the library allows to create and manage applications and customers and their associated key-value stores
+* while logged-in as a customer, the library allows to manage that customer's account and key-value store.
