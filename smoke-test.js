@@ -18,7 +18,7 @@
       updateCustomerRecordBy, deleteCustomer,
     CustomerStorage, CustomerStorageEntry, setCustomerStorageEntryTo,
       deleteCustomerStorageEntry, clearCustomerStorage
-  } from './dist/voltcloud-for-nodejs.esm.js'
+  } from 'voltcloud-for-nodejs'
 
   import path from 'path'
   import  fs  from 'fs'
