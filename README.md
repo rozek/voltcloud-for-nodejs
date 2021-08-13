@@ -24,6 +24,8 @@ Users may register themselves for a VoltCloud application by providing their EMa
 
 Should a customer forget his/ger password, there is also the possibility to initiate a "password reset" process. If triggered, a "password reset email" with a special link to the application will be sent to the customer which, when clicked, should allow the customer to change his/her password. A password reset may be triggered as often as needed.
 
+> special note for german customers: for an unknown reason, customer confirmation or password reset message take quite a while (approx. 2 hours) to reach mailboxes hosted by GMX and Web.de - if you need s.th. to test with, try address at Mail.de, those seem to be much faster right now.
+
 It is important to understand, that an application and a customer who registered for it form a unit. As a consequence, the EMail address may be used for multiple applications - and all customers with that address will be completely independent from each other. VoltCloud does *not* offer any possibility to extend a given registration to other applications.
 
 Once confirmed, a customer may set a first and/or a last name, change his/her password and even configure a new EMail address.
