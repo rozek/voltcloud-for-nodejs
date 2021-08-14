@@ -394,7 +394,7 @@
   CustomerStore = await CustomerStorage()
   expect(KeysOf(CustomerStore).length).to.equal(0)
 
-/**** let's continue with a developer mandate ****/
+/**** let's continue with a customer mandate ****/
 
   console.log('acting on behalf of customer "' + DeveloperAddress + '"')
 
@@ -497,7 +497,7 @@
   console.log('- deleting customer')
   await deleteCustomer()
 
-/**** let's continue with a developer mandate ****/
+/**** let's continue with a developer mandate (again) ****/
 
   console.log('acting on behalf of developer "' + DeveloperAddress + '" again')
 
