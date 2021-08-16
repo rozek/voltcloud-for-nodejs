@@ -58,6 +58,43 @@ Normally, all application- or customer-specific functions require such a focus. 
 
 In contrast to Java, it's not very common in JavaScript to throw specific subclasses of `Error` depending on the type of error that occurred. `voltcloud-for-nodejs` therefore throws "named errors", i.e., instances of `Error` which contain a `name` and a `message` property. The `name` property distinguishes the various error "types" and may be easily used in a `switch` statement to perform some type-specific error handling.
 
+## Prerequisites ##
+
+`voltcloud-for-nodejs` has been built for and, thus, requires [Node.js](https://nodejs.org/). Since you are visiting this page, chances are good that you already have Node.js installed on your machine - if not, please follow the instructions found on nodejs.org to install it (the LTS version is sufficient if you prefer that)
+
+## Installation ##
+
+Simply install the package into your build environment using [NPM](https://docs.npmjs.com/) with the command
+
+```
+npm install voltcloud-for-nodejs
+```
+
+### Access ###
+
+Within your Node.js script, you may then import any functions you need - the following example will import all of them:
+
+```
+import {
+  actOnBehalfOfDeveloper, actOnBehalfOfCustomer,
+  ApplicationRecords, CustomerRecords,
+  focusOnApplication, focusOnApplicationCalled, focusOnNewApplication,
+  ApplicationRecord, changeApplicationNameTo, updateApplicationRecordBy,
+    uploadToApplication, deleteApplication,
+  ApplicationStorage, ApplicationStorageEntry, setApplicationStorageEntryTo,
+    deleteApplicationStorageEntry, clearApplicationStorage,
+  focusOnCustomer, focusOnCustomerWithAddress, focusOnNewCustomer,
+  resendConfirmationEMailToCustomer, confirmCustomerUsing,
+  startPasswordResetForCustomer, resetCustomerPasswordUsing,
+  CustomerRecord, changeCustomerEMailAddressTo, changeCustomerPasswordTo,
+    updateCustomerRecordBy, deleteCustomer,
+  CustomerStorage, CustomerStorageEntry, setCustomerStorageEntryTo,
+    deleteCustomerStorageEntry, clearCustomerStorage
+} from 'voltcloud-for-nodejs'
+```
+
+Just copy that statement into your source code and remove all unwanted functions.
+
 ## API Reference ##
 
 ### exported Constants ###
@@ -148,43 +185,6 @@ Note: additionally, developers may also call any functions mentioned in the prev
 * **`async function updateCustomerRecordBy (Settings:VC_CustomerUpdate):Promise<void>`**<br>updates the settings for the current target customer given by `Settings`. See above for the internals of the Settings object
 
 Note: additionally, developers may also call any functions mentioned in the previous sections, which do either not require any mandate or may be used with developer or customer mandates
-
-## Prerequisites ##
-
-`voltcloud-for-nodejs` has been built for and, thus, requires [Node.js](https://nodejs.org/). Since you are visiting this page, chances are good that you already have Node.js installed on your machine - if not, please follow the instructions found on nodejs.org to install it (the LTS version is sufficient if you prefer that)
-
-## Installation ##
-
-Simply install the package into your build environment using [NPM](https://docs.npmjs.com/) with the command
-
-```
-npm install voltcloud-for-nodejs
-```
-
-### Access ###
-
-Within your Node.js script, you may then import any functions you need - the following example will import all of them:
-
-```
-import {
-  actOnBehalfOfDeveloper, actOnBehalfOfCustomer,
-  ApplicationRecords, CustomerRecords,
-  focusOnApplication, focusOnApplicationCalled, focusOnNewApplication,
-  ApplicationRecord, changeApplicationNameTo, updateApplicationRecordBy,
-    uploadToApplication, deleteApplication,
-  ApplicationStorage, ApplicationStorageEntry, setApplicationStorageEntryTo,
-    deleteApplicationStorageEntry, clearApplicationStorage,
-  focusOnCustomer, focusOnCustomerWithAddress, focusOnNewCustomer,
-  resendConfirmationEMailToCustomer, confirmCustomerUsing,
-  startPasswordResetForCustomer, resetCustomerPasswordUsing,
-  CustomerRecord, changeCustomerEMailAddressTo, changeCustomerPasswordTo,
-    updateCustomerRecordBy, deleteCustomer,
-  CustomerStorage, CustomerStorageEntry, setCustomerStorageEntryTo,
-    deleteCustomerStorageEntry, clearCustomerStorage
-} from 'voltcloud-for-nodejs'
-```
-
-Just copy that statement into your source code and remove all unwanted functions.
 
 ## Smoke Test ##
 
