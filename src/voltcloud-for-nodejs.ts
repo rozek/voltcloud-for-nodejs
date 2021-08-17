@@ -1501,7 +1501,7 @@
                   ))
               }
             case (StatusCode === 401):
-              if (firstAttempt) {         // try to "refresh" the access token
+              if (firstAttempt && (Mode !== 'public')) { // try to "refresh" the access token
                 return (
                   activeDeveloperAddress != null  // also catches login failures
                   ? loginDeveloper(activeDeveloperAddress as string, activeDeveloperPassword as string, false)
@@ -1514,7 +1514,10 @@
                 })
                 .catch((Signal) => reject(Signal))
               }
-              return reject(namedError('AuthorizationFailure: VoltCloud request could not be authorized'))
+              return reject(namedError(
+                'AuthorizationFailure: VoltCloud request could not be authorized',
+                { HTTPStatus:StatusCode }
+              ))
             default:
               if (ContentType.startsWith('application/json')) {
                 try {          // if given, try to use a VoltCloud error message
