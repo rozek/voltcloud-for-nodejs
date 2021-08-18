@@ -1,6 +1,6 @@
 {
   "name": "voltcloud-for-nodejs",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "a simple VoltCloud client library for nodejs",
   "type": "module",
   "module": "./dist/voltcloud-for-nodejs.esm.js",
