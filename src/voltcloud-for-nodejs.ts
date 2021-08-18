@@ -1410,7 +1410,7 @@
     }
   }
 
-/**** ResponseOf - simplified version for applications ****/
+/**** ResponseOf ****/
 
   async function ResponseOf (
     Mode:'public'|'private',
