@@ -1123,41 +1123,28 @@ function resetCustomerPasswordUsing(Token, Password) {
 /**** CustomerRecord ****/
 function CustomerRecord(CustomerId) {
     return __awaiter(this, void 0, void 0, function () {
-        var Response, CustomerRecordList, i, l, CustomerRecord_3, Signal_17;
+        var Response, URL, Signal_17;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     allowNonEmptyString('VoltCloud customer id', CustomerId);
+                    assertDeveloperOrCustomerMandate();
                     assertApplicationFocus();
                     if (CustomerId == null) {
                         assertCustomerFocus();
                         CustomerId = currentCustomerId;
                     }
-                    if (!(activeCustomerId == null)) return [3 /*break*/, 2];
-                    assertDeveloperMandate();
-                    return [4 /*yield*/, CustomerRecords()];
+                    URL = (activeCustomerId == null ? '{{dashboard_url}}' : '{{application_url}}');
+                    _a.label = 1;
                 case 1:
-                    CustomerRecordList = _a.sent();
-                    for (i = 0, l = CustomerRecordList.length; i < l; i++) {
-                        CustomerRecord_3 = CustomerRecordList[i];
-                        if (CustomerRecord_3.id = CustomerId) {
-                            Response = CustomerRecord_3;
-                            break;
-                        }
-                    }
-                    return [3 /*break*/, 6];
-                case 2:
-                    assertCustomerMandate();
-                    _a.label = 3;
-                case 3:
-                    _a.trys.push([3, 5, , 6]);
-                    return [4 /*yield*/, ResponseOf('private', 'GET', '{{application_url}}/api/user/{{customer_id}}', {
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, ResponseOf('private', 'GET', URL + '/api/user/{{customer_id}}', {
                             customer_id: CustomerId
                         })];
-                case 4:
+                case 2:
                     Response = _a.sent();
-                    return [3 /*break*/, 6];
-                case 5:
+                    return [3 /*break*/, 4];
+                case 3:
                     Signal_17 = _a.sent();
                     switch (Signal_17.HTTPStatus) {
                         case 422: switch (Signal_17.message) {
@@ -1166,8 +1153,8 @@ function CustomerRecord(CustomerId) {
                         }
                         default: throw Signal_17;
                     }
-                    return [3 /*break*/, 6];
-                case 6:
+                    return [3 /*break*/, 4];
+                case 4:
                     if ((Response != null) && (Response.id === CustomerId)) {
                         //    currentCustomerId      = Response.id
                         currentCustomerAddress = Response.email; // might have changed
