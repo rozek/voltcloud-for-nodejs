@@ -798,6 +798,7 @@
   ):Promise<VC_CustomerRecord | undefined> {
     allowNonEmptyString('VoltCloud customer id',CustomerId)
 
+    assertDeveloperOrCustomerMandate()
     assertApplicationFocus()
 
     if (CustomerId == null) {
@@ -806,39 +807,22 @@
     }
 
     let Response
-      if (activeCustomerId == null) {
-        assertDeveloperMandate()
-
-      /**** custom implementation ****/
-
-        let CustomerRecordList = await CustomerRecords()
-        for (let i = 0, l = CustomerRecordList.length; i < l; i++) {
-          let CustomerRecord = CustomerRecordList[i]
-          if (CustomerRecord.id = CustomerId) {
-            Response = CustomerRecord
-            break
+      let URL = (activeCustomerId == null ? '{{dashboard_url}}' : '{{application_url}}')
+      try {
+        Response = await ResponseOf(
+          'private', 'GET', URL + '/api/user/{{customer_id}}', {
+            customer_id: CustomerId
           }
-        }
-      } else {
-        assertCustomerMandate()
-
-        try {
-          Response = await ResponseOf(
-            'private', 'GET', '{{application_url}}/api/user/{{customer_id}}', {
-              customer_id: CustomerId
+        )
+      } catch (Signal) {
+        switch (Signal.HTTPStatus) {
+          case 422: switch (Signal.message) {
+              case 'Could not decode scope.':
+                throwError('InvalidArgument: invalid customer id given')
             }
-          )
-        } catch (Signal) {
-          switch (Signal.HTTPStatus) {
-            case 422: switch (Signal.message) {
-                case 'Could not decode scope.':
-                  throwError('InvalidArgument: invalid customer id given')
-              }
-            default: throw Signal
-          }
+          default: throw Signal
         }
       }
-
     if ((Response != null) && (Response.id === CustomerId)) {
 //    currentCustomerId      = Response.id
       currentCustomerAddress = Response.email              // might have changed
