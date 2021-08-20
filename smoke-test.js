@@ -233,7 +233,7 @@
     expect(ApplicationInfo.last_upload).to.exist
   }
 
-/**** delete existing customers ****/
+/**** delete unwanted existing customers ****/
 
   let CustomerRecordList = await CustomerRecords()
   expect(CustomerRecordList).to.be.an('array')
@@ -275,6 +275,8 @@
     })
     expect(CustomerId).to.exist
 
+    await showCustomerRecord(CustomerId)
+
     console.log()
     console.log('a first confirmation email should have been sent to "' + CustomerAddress + '"')
     console.log('just re-run this test without any changes')
@@ -284,6 +286,7 @@
     console.log('- using existing customer "' + CustomerAddress + '"')
 
     await focusOnCustomerWithAddress(CustomerAddress) // needed here in order...
+    await showCustomerRecord()
   }      // ...to be able to access a customer storage record in this smoke test
 
 /**** if need be: perform customer confirmation ****/
@@ -423,14 +426,7 @@
 
 /**** test "CustomerRecord" ****/
 
-  CustomerInfo = await CustomerRecord()
-
-  console.log('- current customer settings:')
-  console.log('  - internal id:   ', CustomerInfo.id)
-  console.log('  - EMail address: ', CustomerInfo.email)
-  console.log('  - confirmed:     ', CustomerInfo.confirmed ? 'yes' : 'no')
-  console.log('  - first name:    ', CustomerInfo.first_name || '(unknown)')
-  console.log('  - last name:     ', CustomerInfo.last_name  || '(unknown)')
+  await showCustomerRecord()
 
 /**** test ApplicationStorage management ****/
 
@@ -517,6 +513,17 @@
         if (Storage.hasOwnProperty(Key)) { KeyList.push(Key) }
       }
     return KeyList
+  }/**** showCustomerRecord ****/
+
+  async function showCustomerRecord (EMailAddress) {
+    CustomerInfo = await CustomerRecord(EMailAddress)
+
+    console.log('- current customer settings:')
+    console.log('  - internal id:   ', CustomerInfo.id)
+    console.log('  - EMail address: ', CustomerInfo.email)
+    console.log('  - confirmed:     ', CustomerInfo.confirmed ? 'yes' : 'no')
+    console.log('  - first name:    ', CustomerInfo.first_name || '(unknown)')
+    console.log('  - last name:     ', CustomerInfo.last_name  || '(unknown)')
   }
 
   console.log()
