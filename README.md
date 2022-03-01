@@ -74,7 +74,7 @@ npm install voltcloud-for-nodejs
 
 Within your Node.js script, you may then import any functions you need - the following example will import all of them:
 
-```
+```javascript
 import {
   actOnBehalfOfDeveloper, actOnBehalfOfCustomer,
   ApplicationRecords, CustomerRecords,
